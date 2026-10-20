@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
+  <title>Cinematic JARVIS HUD logo</title>
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#b4fbff" stop-opacity="0.98"/>
+      <stop offset="40%" stop-color="#67e8ff" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#67e8ff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#9cf3ff"/>
+      <stop offset="100%" stop-color="#8598ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" rx="84" fill="#06101b"/>
+  <circle cx="200" cy="200" r="150" fill="url(#glow)"/>
+  <circle cx="200" cy="200" r="160" fill="none" stroke="#173244" stroke-width="2"/>
+  <circle cx="200" cy="200" r="138" fill="none" stroke="url(#ring)" stroke-width="6" stroke-dasharray="38 14 8 10"/>
+  <circle cx="200" cy="200" r="110" fill="none" stroke="#67e8ff" stroke-opacity="0.45" stroke-width="3" stroke-dasharray="12 8"/>
+  <circle cx="200" cy="200" r="78" fill="none" stroke="#9cf3ff" stroke-width="10" stroke-opacity="0.76"/>
+  <circle cx="200" cy="200" r="44" fill="none" stroke="#67e8ff" stroke-width="7"/>
+  <circle cx="200" cy="200" r="16" fill="#b4fbff"/>
+  <path d="M200 64l88 51v102l-88 51-88-51V115z" fill="none" stroke="url(#ring)" stroke-width="4.5"/>
+  <path d="M36 200h68M296 200h68M200 36v68M200 296v68" stroke="#2d5a73" stroke-width="3" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,7 @@
+{
+  "printers": [
+    {"id":"x1c","name":"The Beast (X1C)","host":"192.168.1.50","serial":"YOUR_X1C_SERIAL","access_code_env":"BAMBU_X1C_CODE","camera_url":""},
+    {"id":"a1","name":"LittleOne (A1)","host":"192.168.1.51","serial":"YOUR_A1_SERIAL","access_code_env":"BAMBU_A1_CODE","camera_url":""},
+    {"id":"a2l","name":"A2L","host":"192.168.1.52","serial":"YOUR_PRINTER_SERIAL","access_code_env":"BAMBU_A2L_CODE","camera_url":""}
+  ]
+}

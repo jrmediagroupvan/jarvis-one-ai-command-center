@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>JARVIS — Cyberpunk City Command Centre</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="/static/hud2.css?v=1">
+</head>
+<body>
+  <div class="screen-glow" aria-hidden="true"></div><div class="cyber-cityscape" aria-hidden="true"><div class="city-stars"></div><div class="city-rain"></div></div>
+  <div class="hud-shell">
+    <header class="topbar">
+      <div class="brand-wrap">
+        <div class="brand-logo-frame"><img alt="JARVIS editable logo" src="/static/assets/jarvis-logo.svg"></div>
+        <div>
+          <h1 id="brand">JARVIS</h1>
+          <p class="tagline">JUST A RATHER VERY INTELLIGENT SYSTEM • COMMAND INTERFACE • HOME NETWORK</p>
+        </div>
+      </div>
+      <div class="topbar-meta">
+        <div class="status-pill online"><span class="dot"></span> SYSTEM ONLINE</div>
+        <div class="status-pill" id="systemClock">--:--:--</div>
+      </div>
+    </header>
+
+    <main>
+      <nav>
+        <div class="nav-title">NAVIGATION</div>
+        <button class="nav active" data-section="dashboard">◈ Dashboard</button>
+        <button class="nav" data-section="chat">◎ AI Chat</button>
+        <button class="nav" data-section="tasks">☑ Tasks</button>
+        <button class="nav" data-section="notes">▤ My Notes</button>
+        <button class="nav" data-section="browser">◉ Browser Control</button>
+        <button class="nav" data-section="printers">▣ Printers</button>
+        <button class="nav" data-section="style">✎ Appearance</button>
+        <button class="nav" data-section="plugins">⚙ Plugins</button>
+        <button class="nav admin-only" data-section="voices">♫ Voice Manager</button>
+        <button class="nav admin-only" data-section="updates">⬆ System Updates</button>
+        <button class="nav admin-only" data-section="accounts">♙ Family accounts</button>
+        <button class="nav" data-section="security">🔐 My Password</button>
+      </nav>
+
+      <div class="workspace">
+        <section id="dashboard" class="panel active hud2" aria-label="JARVIS command dashboard">
+          <div class="hud2-topline">
+            <span class="hud2-name">JARVIS <span>v1</span></span>
+            <span class="hud2-subtitle">HOME AI ASSISTANT / COMMAND DASHBOARD</span>
+            <span class="hud2-top-state"><i></i> <span id="hud2-top-status">CONNECTING</span></span>
+          </div>
+          <div class="hud2-layout">
+            <div class="hud2-col hud2-left">
+              <article class="hud2-card hud2-time">
+                <div class="hud2-heading"><span>◷ &nbsp; TIME &amp; DATE</span><button type="button" data-goto="style" class="hud2-zone-link" title="Change your time zone">CHANGE TIME ZONE ↗</button></div>
+                <div class="hud2-clock" id="hud2-clock">--:--</div>
+                <div class="hud2-date" id="hud2-date">Loading date…</div>
+                <div class="hud2-zone-caption" id="hud2-timezone-label">Browser time zone</div>
+              </article>
+              <article class="hud2-card hud2-weather">
+                <div class="hud2-heading"><span>⌂ &nbsp; ENVIRONMENT</span><small id="hud2-weather-label">WEATHER</small></div>
+                <div id="hud2-weather-live" hidden>
+                  <div class="hud2-weather-main"><strong id="hud2-temperature">—</strong><div><div id="hud2-weather-description">—</div><small>Outdoor weather · configured coordinates</small></div></div>
+                  <div class="hud2-info-line"><span>Humidity</span><strong id="hud2-humidity">—</strong></div>
+                  <div class="hud2-info-line"><span>Wind</span><strong id="hud2-wind">—</strong></div>
+                  <div class="hud2-info-line"><span>High / Low</span><strong id="hud2-high-low">—</strong></div>
+                  <div class="hud2-info-line"><span>Rain chance</span><strong id="hud2-rain">—</strong></div>
+                </div>
+                <div id="hud2-weather-unavailable" class="hud2-empty"><strong>Weather not configured</strong><p>Set your outdoor location in Appearance → Weather settings. No .env editing needed. Indoor sensors aren't connected.</p></div>
+              </article>
+              <article class="hud2-card hud2-systems">
+                <div class="hud2-heading"><span>▤ &nbsp; SYSTEMS</span><small>LINUX HOST</small></div>
+                <div class="hud2-meter-row"><span>CPU</span><progress id="hud2-cpu-meter" max="100" value="0"></progress><strong id="hud2-cpu">—</strong></div>
+                <div class="hud2-meter-row"><span>Memory</span><progress id="hud2-memory-meter" max="100" value="0"></progress><strong id="hud2-memory">—</strong></div>
+                <div class="hud2-meter-row"><span>Storage</span><progress id="hud2-disk-meter" max="100" value="0"></progress><strong id="hud2-disk">—</strong></div>
+                <div class="hud2-info-line"><span>Host uptime</span><strong id="hud2-uptime">—</strong></div>
+                <div class="hud2-info-line"><span>Storage used</span><strong id="hud2-disk-details">—</strong></div>
+                <div class="hud2-measured">Real Linux readings · refreshes every 10 seconds</div>
+              </article>
+              <article class="hud2-card hud2-comms">
+                <div class="hud2-heading"><span>▣ &nbsp; ACTIVITY</span><button type="button" data-goto="tasks">OPEN TASKS ↗</button></div>
+                <div class="hud2-info-line"><span>Pending tasks</span><strong id="hud2-pending">—</strong></div>
+                <div class="hud2-info-line"><span>Notes saved</span><strong id="hud2-notes">—</strong></div>
+                <div id="hud2-activity-list" class="hud2-activity-list"><div class="hud2-muted">Your recent tasks will appear here.</div></div>
+              </article>
+            </div>
+            <div class="hud2-col hud2-centre">
+              <article class="hud2-card hud2-ai">
+                <div class="hud2-heading"><span>◉ &nbsp; JARVIS A.I. CORE</span><small><i class="hud2-indicator"></i> <span id="hud2-ai-state">CHECKING</span></small></div>
+                <div class="hud2-ai-workspace">
+                  <div class="hud2-ai-rail hud2-rail-left"><span>AI ENGINE</span><strong id="hud2-provider">—</strong><span>VOICE SYSTEM</span><strong>WHISPER / PIPER</strong><span>PRINTERS</span><strong id="hud2-printer-small">—</strong></div>
+                  <div class="hud2-orb" aria-label="Animated JARVIS AI core">
+                    <div class="hud2-orbit hud2-orbit-one"></div><div class="hud2-orbit hud2-orbit-two"></div><div class="hud2-orbit hud2-orbit-three"></div><div class="hud2-orbit hud2-orbit-four"></div>
+                    <div class="hud2-orb-crosshair"></div>
+                    <div class="hud2-orb-center"><strong>JARVIS</strong><span id="hud2-core-voice">READY</span><div class="hud2-voicewave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+                  </div>
+                  <div class="hud2-ai-rail hud2-rail-right"><span>AI MODEL</span><strong id="hud2-model">—</strong><span>SYSTEM VERSION</span><strong id="hud2-version">—</strong><span>NETWORK</span><strong>LAN COMMAND</strong></div>
+                </div>
+                <div class="hud2-ai-actions"><button type="button" data-goto="chat">◎ &nbsp; AI CHAT &amp; VOICE</button><button type="button" data-goto="browser">↗ &nbsp; BROWSER CONTROL</button><button type="button" data-goto="style">⚙ &nbsp; MODEL SETTINGS</button></div>
+              </article>
+              <article class="hud2-card hud2-conversation">
+                <div class="hud2-heading"><span>▢ &nbsp; CONVERSATION</span><span class="hud2-muted">THIS BROWSER SESSION</span></div>
+                <div id="hud2-conversation-list" class="hud2-conversation-list" role="log" aria-live="polite"><div class="hud2-convo-row"><span>JARVIS</span><p>Command interface ready. Ask me anything.</p></div></div>
+                <form id="quickChatForm" class="hud2-chat-form"><button type="button" data-goto="chat" aria-label="Open voice controls">♫</button><input id="quickChatInput" maxlength="4000" autocomplete="off" aria-label="Ask JARVIS" placeholder="Ask JARVIS anything…" required><button type="submit" aria-label="Send question">➜</button></form>
+                <div class="hud2-convo-foot"><span>Replies appear here automatically</span><span id="hud2-chat-state">AI chat ready</span></div>
+              </article>
+            </div>
+            <div class="hud2-col hud2-right">
+              <article class="hud2-card hud2-fabrication">
+                <div class="hud2-heading"><span>⬡ &nbsp; 3D PRINTERS</span><button type="button" data-goto="printers"><span id="hud2-printer-count">—</span> &nbsp; VIEW ALL ↗</button></div>
+                <div id="hud2-printer-list" class="hud2-printer-list"><div class="hud2-empty"><strong>Loading printers…</strong></div></div>
+                <div class="hud2-fab-foot">Printer status from Bambu LAN MQTT. Live camera images require a configured compatible camera URL.</div>
+              </article>
+            </div>
+          </div>
+          <div class="hud2-bottomline"><span>JARVIS <small>INTELLIGENCE FOR YOUR HOME NETWORK</small></span><span id="hud2-foot-status">System overview · authenticated session</span><span id="hud2-foot-clock">--:--</span></div>
+          <div class="neon-compat-metrics" hidden><span id="model"></span><span id="printerCount"></span><span id="pendingCount"></span><span id="noteCount"></span><span id="heroProviderBadge"></span><div id="recentTasks"></div></div>
+        </section>
+
+        <section id="browser" class="panel">
+          <div class="panel-head"><div><span class="eyebrow">JARVIS AUTOMATION</span><h2>Browser Control</h2><p class="muted">A private Chromium browser runs on the Ubuntu server. Use JARVIS voice/chat to open sites, or the controls below to navigate, search, click and type. This is not your Windows desktop Chrome.</p></div></div>
+          <div class="browser-toolbar hud-card">
+            <form id="browserGoForm" class="inline"><input id="browserAddress" placeholder="youtube.com or https://www.google.com" autocomplete="off" aria-label="Website" required><button type="submit">Open</button></form>
+            <form id="browserSearchForm" class="inline"><input id="browserQuery" placeholder="Search Google" aria-label="Web search" required><button type="submit">Search</button></form>
+            <div class="browser-actions"><button type="button" data-browser="back">◀ Back</button><button type="button" data-browser="forward">Forward ▶</button><button type="button" data-browser="reload">↻ Reload</button><button type="button" id="browserRefresh">Refresh view</button></div>
+            <form id="browserClickForm" class="inline"><input id="browserClickText" placeholder="Visible link or button text to click" required><button type="submit">Click text</button></form>
+            <form id="browserTypeForm" class="inline"><input id="browserTypeText" placeholder="Type into first text field" required><button type="submit">Type text</button></form>
+            <div class="browser-actions"><button type="button" data-browser="scroll" data-value="up">↑ Scroll</button><button type="button" data-browser="scroll" data-value="down">↓ Scroll</button></div>
+            <p id="browserStatus" role="status" class="muted">Ready. Open a website to start.</p>
+          </div>
+          <div class="hud-card browser-preview"><img id="browserScreenshot" alt="Screenshot of the browser running on your Ubuntu server"><p class="muted">Some sites require login, block automation or do not display in a managed browser. Actions happen only when requested.</p></div>
+        </section>
+
+        <section id="chat" class="panel">
+          <div class="model-control hud-card">
+            <div><span class="eyebrow">AI MODEL</span><h3>Choose your model</h3><p class="muted">Switch models without a server restart. Choices are approved by an administrator.</p></div>
+            <div class="model-control-input"><select id="chatModelSelect" aria-label="AI model"></select><button id="saveModelChoice" type="button">Use model</button></div>
+            <p id="modelSwitchStatus" role="status" class="muted"></p>
+          </div>
+          <div class="panel-head"><div><span class="eyebrow">VOICE & CONVERSATION</span><h2>JARVIS Chat</h2></div></div>
+          <div id="chatHistory" class="chatlog" aria-live="polite"><div class="bubble">JARVIS online. Ask me anything.</div></div>
+          <div class="voicebar hud-card">
+            <button type="button" id="wakeButton" aria-pressed="false">Enable “Hey JARVIS”</button>
+            <button type="button" id="micButton" aria-pressed="false">🎙 Start voice command</button>
+            <label><input type="checkbox" id="speakReplies" checked> Read JARVIS replies aloud</label>
+            <button type="button" id="stopSpeech">Stop speaking</button>
+            <label>Speech speed <select id="speechRate"><option value="0.9">Slow</option><option selected value="1">Normal</option><option value="1.15">Fast</option></select></label>
+            <label>Voice <select id="voiceSelect"><option value="">Default</option></select></label>
+          </div>
+          <div class="wake-preferences hud-card" id="wakePreferences">
+  <div><strong>Hands-free voice preferences</strong><p class="muted">Opt in once to remember wake-word listening on this browser. Your browser must allow microphone access, and the JARVIS tab must remain open. You can turn it off at any time.</p></div>
+  <label class="wake-toggle"><input type="checkbox" id="autoWakePreference"> Automatically resume “Hey JARVIS” when permitted</label>
+  <label class="wake-toggle"><input type="checkbox" id="wakeGreetingPreference" checked> Speak a random greeting before listening for my command</label>
+  <span id="wakePreferenceStatus" class="muted" role="status"></span>
+</div>
+<p id="voiceStatus" class="muted" role="status">Click Enable “Hey JARVIS” once to grant microphone access. On supported secure connections, JARVIS can resume listening when you return.</p>
+          <form id="chatForm" class="inline"><input id="message" placeholder="Ask JARVIS…" required maxlength="4000"><button>Send</button></form>
+          <p class="muted">Uses the configured NVIDIA or OpenRouter hosted model. Speech-to-text runs on your Ubuntu server with free local Whisper. Spoken replies can use installed Piper voices or your browser voices.</p>
+        </section>
+
+        <section id="tasks" class="panel"><div class="panel-head"><div><span class="eyebrow">ACCOUNT TASKS</span><h2>Task manager</h2></div></div><form id="taskForm" class="inline"><input id="taskTitle" placeholder="Add a new task" required maxlength="240"><button>Add task</button></form><div id="taskList"></div></section>
+
+        <section id="notes" class="panel"><div class="panel-head"><div><span class="eyebrow">PRIVATE MEMORY</span><h2>My Notes</h2><p class="muted">Private notes, available whenever you sign in from your home network.</p></div></div><form id="noteForm" class="stack"><label for="noteBody">Write a note</label><textarea id="noteBody" placeholder="Ideas, printer settings, things to remember…" maxlength="4000" required rows="4"></textarea><button type="submit">Save note</button></form><p id="noteStatus" role="status"></p><div id="noteList"></div></section>
+
+        <section id="printers" class="panel"><div class="panel-head"><div><span class="eyebrow">FABRICATION MONITOR</span><h2>Bambu printer monitor</h2></div></div><div id="printerSummary" class="muted"></div><p class="muted">Read-only status from LAN MQTT. Camera panels display only camera bridge URLs you explicitly configure.</p><div id="printerList" class="tiles"></div><button type="button" id="refreshPrinters">Refresh</button></section>
+
+        <section id="style" class="panel">
+          <div class="hud-card model-admin admin-only">
+            <h3>Approved AI models</h3>
+            <p class="muted">Administrators add model IDs available to family members. API keys remain server-side. Only add IDs provided by your AI provider.</p>
+            <form id="approvedModelForm" class="stack">
+              <label>Provider <select id="adminModelProvider"><option value="openrouter">OpenRouter</option><option value="nvidia">NVIDIA</option></select></label>
+              <label>Display name <input id="adminModelLabel" maxlength="100" placeholder="My free model" required></label>
+              <label>Model ID <input id="adminModelId" maxlength="160" placeholder="provider/model-id" required></label>
+              <button>Add approved model</button>
+            </form>
+            <p id="modelAdminStatus" role="status"></p><div id="modelCatalogList"></div>
+          </div>
+
+<div class="hud-card timezone-settings">
+  <div class="timezone-settings-head">
+    <div><span class="eyebrow">PERSONAL CLOCK SETTINGS</span><h3>Time zone</h3><p class="muted">Choose the time zone shown on your dashboard and in JARVIS timestamps. Automatically handles daylight saving time. Saved to your account.</p></div>
+    <span class="timezone-current" id="timezoneCurrent">Browser time zone</span>
+  </div>
+  <form id="timezoneForm" class="timezone-form">
+    <label for="timezoneSelect">Display time zone</label>
+    <select id="timezoneSelect" aria-label="Select JARVIS time zone">
+      <option value="browser">Automatic — use browser time zone</option>
+      <optgroup label="Canada">
+        <option value="America/Vancouver">Pacific — Vancouver, BC</option>
+        <option value="America/Edmonton">Mountain — Calgary / Edmonton</option>
+        <option value="America/Regina">Saskatchewan — Regina</option>
+        <option value="America/Winnipeg">Central — Winnipeg</option>
+        <option value="America/Toronto">Eastern — Toronto / Ottawa</option>
+        <option value="America/Halifax">Atlantic — Halifax</option>
+        <option value="America/St_Johns">Newfoundland — St. John's</option>
+        <option value="America/Whitehorse">Yukon — Whitehorse</option>
+      </optgroup>
+      <optgroup label="United States">
+        <option value="America/Los_Angeles">Pacific — Los Angeles</option>
+        <option value="America/Denver">Mountain — Denver</option>
+        <option value="America/Chicago">Central — Chicago</option>
+        <option value="America/New_York">Eastern — New York</option>
+        <option value="America/Anchorage">Alaska — Anchorage</option>
+        <option value="Pacific/Honolulu">Hawaii — Honolulu</option>
+      </optgroup>
+      <optgroup label="Worldwide">
+        <option value="UTC">UTC</option>
+        <option value="Europe/London">London</option>
+        <option value="Europe/Paris">Paris / Berlin</option>
+        <option value="Asia/Dubai">Dubai</option>
+        <option value="Asia/Kolkata">India — Kolkata</option>
+        <option value="Asia/Tokyo">Tokyo</option>
+        <option value="Australia/Sydney">Sydney</option>
+        <option value="Pacific/Auckland">Auckland</option>
+      </optgroup>
+      <option value="custom">Other — enter an IANA time zone</option>
+    </select>
+    <label class="timezone-custom" id="customTimezoneLabel" for="customTimezone" hidden>Custom time zone <input id="customTimezone" type="text" maxlength="100" autocomplete="off" spellcheck="false" placeholder="e.g. America/Phoenix"></label>
+    <button type="submit" id="saveTimezoneButton">Save time zone</button>
+  </form>
+  <p id="timezoneStatus" role="status" aria-live="polite" class="muted timezone-feedback"></p>
+</div>
+
+<div class="hud-card weather-settings admin-only" id="weatherSettings">
+  <div class="weather-settings-header"><div><span class="eyebrow">OUTDOOR CONDITIONS</span><h3>Weather settings</h3>
+    <p class="muted">Set the location for live outdoor weather in your dashboard. Saved securely in JARVIS data, without editing the .env file or restarting Docker. Administrators only.</p></div>
+    <span id="weatherSourceStatus" class="muted">Checking location…</span></div>
+  <form id="weatherSettingsForm" class="weather-settings-form">
+    <label>Location name (optional)<input type="text" id="weatherLocationLabel" placeholder="e.g. Home" maxlength="80" autocomplete="off"></label>
+    <label>Latitude<input type="number" id="weatherLatitude" min="-90" max="90" step="any" placeholder="Latitude (decimal degrees)" required></label>
+    <label>Longitude<input type="number" id="weatherLongitude" min="-180" max="180" step="any" placeholder="Longitude (decimal degrees)" required></label>
+    <button type="submit" id="weatherSaveButton">Save outdoor location</button>
+    <button type="button" id="weatherDetectButton">Use my browser location</button>
+    <button type="button" id="weatherResetButton" class="secondary-button">Reset to default</button>
+  </form>
+  <p class="muted">Location access is requested only when you click “Use my browser location”. Weather readings come from Open-Meteo; indoor sensors are not connected.</p>
+  <p id="weatherSettingsStatus" role="status" aria-live="polite" class="muted"></p>
+</div>
+          <div class="panel-head"><div><span class="eyebrow">THEME CONTROL</span><h2>Appearance editor</h2><p class="muted">Choose a cinematic HUD preset or customize title and colors.</p></div></div>
+          <div class="preset-grid">
+            <button type="button" class="theme-preset" data-title="JARVIS" data-accent="#67e8ff" data-background="#07111d">Arc Blue</button>
+            <button type="button" class="theme-preset" data-title="JARVIS" data-accent="#7f8fff" data-background="#0a1022">Stark Violet</button>
+            <button type="button" class="theme-preset" data-title="JARVIS" data-accent="#6bffd6" data-background="#041512">Emerald HUD</button>
+            <button type="button" class="theme-preset" data-title="JARVIS" data-accent="#ffb067" data-background="#15100a">Amber Reactor</button>
+            <button type="button" class="theme-preset" data-title="JARVIS" data-accent="#4df3ff" data-background="#060611">Cyberpunk Scene</button>
+          </div>
+          <form id="appearanceForm" class="appearance-grid"><label>System name <input id="systemName" maxlength="60"></label><label>Accent color <input id="accent" type="color"></label><label>Background <input id="background" type="color"></label><button>Save appearance</button></form>
+        </section>
+
+        <section id="plugins" class="panel"><div class="panel-head"><div><span class="eyebrow">SERVER EXTENSIONS</span><h2>Plugin center</h2><p class="muted">Only administrators can upload plugin archives. Python plugins execute trusted server-side code when restarted; review the source before installing.</p></div></div><div id="pluginsList"></div><form id="pluginForm" class="admin-only"><label>Upload a reviewed ZIP containing one Python plugin file <input id="pluginZip" type="file" accept=".zip" required></label><button>Upload plugin</button></form><p id="pluginStatus" role="status"></p></section>
+
+        <section id="voices" class="panel"><div class="panel-head"><div><span class="eyebrow">SPEECH OUTPUT</span><h2>Voice Manager</h2><p class="muted">Administrator only. Upload a Piper voice .onnx and matching .onnx.json configuration, then choose it in AI Chat.</p></div></div><form id="voiceUploadForm" class="stack"><label>Piper voice model / configuration <input type="file" id="voiceFile" accept=".onnx,.json" required></label><button type="submit">Upload voice file</button></form><p id="voiceUploadStatus" role="status"></p><div id="installedVoices"></div></section>
+
+        <section id="updates" class="panel"><div class="panel-head"><div><span class="eyebrow">MAINTENANCE</span><h2>System Updates</h2><p class="muted">Administrator only. Upload a trusted, complete JARVIS ZIP and apply it from this page.</p></div></div><form id="updateForm" class="stack"><label>Select updated JARVIS ZIP <input id="updateZip" type="file" accept=".zip" required></label><button>1. Upload and validate ZIP</button></form><p id="updateStatus" role="status"></p><div class="stack"><label>Confirm your admin password to apply <input id="applyPassword" type="password" autocomplete="current-password"></label><button id="applyUpdateButton" type="button" disabled>2. Apply uploaded update</button></div><p id="applyStatus" role="status"></p><h3>Uploaded updates</h3><div id="updatesList"></div><p class="muted">Only install ZIP files from trusted developers.</p></section>
+
+        <section id="accounts" class="panel"><div class="panel-head"><div><span class="eyebrow">ACCESS CONTROL</span><h2>Family accounts</h2><p class="muted">Administrator-only. Family accounts have independent tasks and cannot install plugins or manage other users.</p></div></div><form id="accountForm" class="stack"><label>Username <input id="newUsername" autocomplete="off" minlength="3" required></label><label>Temporary password (12+ characters) <input id="newPassword" type="password" autocomplete="new-password" minlength="12" required></label><label>Role <select id="newRole"><option value="family">Family</option><option value="admin">Administrator</option></select></label><button>Create account</button></form><p id="accountStatus" role="status"></p><div id="accountsList"></div></section>
+
+        <section id="security" class="panel"><div class="panel-head"><div><span class="eyebrow">PERSONAL SECURITY</span><h2>Change my password</h2><p class="muted">Available to every account. Enter your current password to protect your login.</p></div></div><form id="changePasswordForm" class="stack"><label>Current password <input id="currentPassword" type="password" autocomplete="current-password" required></label><label>New password <input id="newOwnPassword" type="password" autocomplete="new-password" minlength="12" maxlength="256" required></label><label>Confirm new password <input id="confirmOwnPassword" type="password" autocomplete="new-password" minlength="12" maxlength="256" required></label><button type="submit">Update my password</button></form><p id="passwordStatus" role="status"></p><p class="muted">After changing it, your browser may ask you to sign in again.</p></section>
+      </div>
+    </main>
+  </div>
+  <script src="/static/app.js"></script>
+</body>
+</html>

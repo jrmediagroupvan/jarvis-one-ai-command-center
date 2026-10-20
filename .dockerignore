@@ -1,0 +1,23 @@
+# Exclude local secrets and data from Docker's build context
+.git
+.github
+.env
+.env.*
+!.env.example
+config/printers.json
+config/appearance.json
+config/cameras.json
+config/*secret*
+data/
+__pycache__/
+.pytest_cache/
+*.pyc
+*.db
+.venv/
+venv/
+*.tar
+*.tar.gz
+*.zip
+screenshots/
+docs/
+scripts/

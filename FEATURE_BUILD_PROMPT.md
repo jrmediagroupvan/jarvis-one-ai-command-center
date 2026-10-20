@@ -1,0 +1,1 @@
+Complete JARVIS v1 application: cyan HUD; per-account time zones; admin-managed weather coordinates through Appearance saved in private data; browser opt-in automatic wake listening and spoken random response on Hey JARVIS followed by next audio command. Preserve all original features.

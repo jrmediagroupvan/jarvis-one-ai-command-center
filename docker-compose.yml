@@ -1,0 +1,45 @@
+services:
+  jarvis:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "8765:8765"
+    env_file: .env
+    environment:
+      PRINTERS_CONFIG: /app/config/printers.json
+      JARVIS_DATA: /app/data
+    volumes:
+      - ./data:/app/data
+      - ./config:/app/config:ro
+    security_opt:
+      - no-new-privileges:true
+
+  voice:
+    build:
+      context: .
+      dockerfile: app/voice/Dockerfile
+    restart: unless-stopped
+    environment:
+      WHISPER_MODEL: ${WHISPER_MODEL:-base.en}
+      WHISPER_DEVICE: ${WHISPER_DEVICE:-cpu}
+      WHISPER_COMPUTE_TYPE: ${WHISPER_COMPUTE_TYPE:-int8}
+      HF_HOME: /models
+    volumes:
+      - jarvis_voice_models:/models
+      - ./data/voices:/voices:ro
+    security_opt:
+      - no-new-privileges:true
+    # Internal only, no published port; JARVIS talks to this container.
+
+  browser:
+    build:
+      context: .
+      dockerfile: app/browser/Dockerfile
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    # Internal only; JARVIS authenticates and proxies user requests.
+    shm_size: 1gb
+
+volumes:
+  jarvis_voice_models:
